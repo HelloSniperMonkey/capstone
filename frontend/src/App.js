@@ -6,6 +6,10 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import BulkImport from "./pages/BulkImport";
+import Forms from "./pages/Forms";
+import FormFill from "./pages/FormFill";
+import Submissions from "./pages/Submissions";
+import Approvals from "./pages/Approvals";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -29,6 +33,38 @@ function App() {
           element={
             <PrivateRoute>
               <BulkImport />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms"
+          element={
+            <PrivateRoute>
+              <Forms />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/:templateId/fill"
+          element={
+            <PrivateRoute>
+              <FormFill />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/submissions"
+          element={
+            <PrivateRoute>
+              <Submissions />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/approvals"
+          element={
+            <PrivateRoute>
+              <Approvals />
             </PrivateRoute>
           }
         />
