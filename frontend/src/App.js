@@ -11,20 +11,24 @@ import FormFill from "./pages/FormFill";
 import Submissions from "./pages/Submissions";
 import Approvals from "./pages/Approvals";
 import PrivateRoute from "./components/PrivateRoute";
+import Layout from "./components/Layout";
+import AuthLayout from "./components/AuthLayout";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset/:token" element={<ResetPassword />} />
+        <Route path="/" element={<AuthLayout title="Sign In" subtitle="Enter your credentials to access the portal"><Login /></AuthLayout>} />
+        <Route path="/register" element={<AuthLayout title="Create Account" subtitle="Register for the Faculty & Staff Portal"><Register /></AuthLayout>} />
+        <Route path="/forgot-password" element={<AuthLayout title="Forgot Password" subtitle="We'll send a reset link to your registered email"><ForgotPassword /></AuthLayout>} />
+        <Route path="/reset/:token" element={<AuthLayout title="Reset Password" subtitle="Enter your new password"><ResetPassword /></AuthLayout>} />
         <Route
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <Layout>
+                <Dashboard />
+              </Layout>
             </PrivateRoute>
           }
         />
@@ -32,7 +36,9 @@ function App() {
           path="/admin/bulk-import"
           element={
             <PrivateRoute>
-              <BulkImport />
+              <Layout>
+                <BulkImport />
+              </Layout>
             </PrivateRoute>
           }
         />
@@ -40,7 +46,9 @@ function App() {
           path="/forms"
           element={
             <PrivateRoute>
-              <Forms />
+              <Layout>
+                <Forms />
+              </Layout>
             </PrivateRoute>
           }
         />
@@ -48,7 +56,9 @@ function App() {
           path="/forms/:templateId/fill"
           element={
             <PrivateRoute>
-              <FormFill />
+              <Layout>
+                <FormFill />
+              </Layout>
             </PrivateRoute>
           }
         />
@@ -56,7 +66,9 @@ function App() {
           path="/submissions"
           element={
             <PrivateRoute>
-              <Submissions />
+              <Layout>
+                <Submissions />
+              </Layout>
             </PrivateRoute>
           }
         />
@@ -64,7 +76,9 @@ function App() {
           path="/approvals"
           element={
             <PrivateRoute>
-              <Approvals />
+              <Layout>
+                <Approvals />
+              </Layout>
             </PrivateRoute>
           }
         />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
 
@@ -31,49 +31,39 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 10,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2
-        }}
-      >
-        <Typography variant="h4" align="center">
-          Login
-        </Typography>
-
-        <TextField
-          label="Email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          fullWidth
-        />
-
-        <TextField
-          label="Password"
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          fullWidth
-        />
-
-        <Button variant="contained" onClick={handleLogin}>
-          Login
-        </Button>
-
-        <Typography variant="body2" align="center">
-          <Link to="/forgot-password">Forgot Password?</Link>
-        </Typography>
-
-        <Typography variant="body2" align="center">
-          Don't have an account? <Link to="/register">Register</Link>
-        </Typography>
-      </Box>
-    </Container>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <TextField
+        label="Email"
+        name="email"
+        type="email"
+        value={form.email}
+        onChange={handleChange}
+        fullWidth
+        size="medium"
+      />
+      <TextField
+        label="Password"
+        name="password"
+        type="password"
+        value={form.password}
+        onChange={handleChange}
+        fullWidth
+      />
+      <Button variant="contained" size="large" onClick={handleLogin} fullWidth sx={{ py: 1.25 }}>
+        Sign In
+      </Button>
+      <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+        <Link to="/forgot-password" style={{ color: "inherit", textDecoration: "underline" }}>
+          Forgot Password?
+        </Link>
+      </Typography>
+      <Typography variant="body2" align="center">
+        Don&apos;t have an account?{" "}
+        <Link to="/register" style={{ color: "inherit", textDecoration: "underline", fontWeight: 600 }}>
+          Register
+        </Link>
+      </Typography>
+    </Box>
   );
 };
 

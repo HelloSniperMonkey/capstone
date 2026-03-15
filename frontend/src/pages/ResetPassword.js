@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import { TextField, Button, Box, Container } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     password: "",
     confirmPassword: ""
@@ -28,6 +29,7 @@ const ResetPassword = () => {
       const res = await API.post(`/auth/reset-password/${token}`, {
         password: form.password
       });
+
       alert(res.data.message || "Password reset successfully!");
       navigate("/");
     } catch (err) {
@@ -37,18 +39,7 @@ const ResetPassword = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 10,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2
-        }}
-      >
-        <Typography variant="h4" align="center">
-          Reset Password
-        </Typography>
-
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 5 }}>
         <TextField
           label="New Password"
           name="password"
