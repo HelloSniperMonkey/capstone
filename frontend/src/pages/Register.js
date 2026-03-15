@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
 
@@ -30,19 +30,7 @@ const Register = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 10,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2
-        }}
-      >
-        <Typography variant="h4" align="center">
-          Register
-        </Typography>
-
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField
           label="Name"
           name="name"
@@ -76,7 +64,6 @@ const Register = () => {
           Already have an account? <Link to="/">Login</Link>
         </Typography>
       </Box>
-    </Container>
   );
 };
 

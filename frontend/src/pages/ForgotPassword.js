@@ -16,40 +16,26 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 10,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2
-        }}
-      >
-        <Typography variant="h4" align="center">
-          Forgot Password
-        </Typography>
-
-        <Typography variant="body1" align="center">
-          Enter your email address and we'll send you a link to reset your password.
-        </Typography>
-
-        <TextField
-          label="Email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-        />
-
-        <Button variant="contained" onClick={handleForgotPassword}>
-          Send Reset Link
-        </Button>
-
-        <Typography variant="body2" align="center">
-          Go back to <Link to="/">Login</Link>
-        </Typography>
-      </Box>
-    </Container>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Typography variant="body2" align="center" color="text.secondary">
+        Enter your registered email address and we&apos;ll send you a link to reset your password.
+      </Typography>
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        fullWidth
+      />
+      <Button variant="contained" size="large" onClick={handleForgotPassword} fullWidth sx={{ py: 1.25 }}>
+        Send Reset Link
+      </Button>
+      <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+        <Link to="/" style={{ color: "inherit", textDecoration: "underline" }}>
+          Back to Login
+        </Link>
+      </Typography>
+    </Box>
   );
 };
 
