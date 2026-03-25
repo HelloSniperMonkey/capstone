@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/User");
 
 const ALLOWED_ROLES = ["Faculty", "HOD", "Dean", "Director"];
@@ -113,6 +115,11 @@ const generateProfilePdf = async (req, res) => {
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", "attachment; filename=profile.pdf");
     doc.pipe(res);
+
+    const logoPath = path.resolve(__dirname, "../../../iitp.jpg");
+    if (fs.existsSync(logoPath)) {
+      doc.image(logoPath, 50, 45, { fit: [54, 54] });
+    }
 
     doc.fontSize(22).font("Helvetica-Bold").text("Indian Institute of Technology Patna", { align: "center" });
     doc.fontSize(12).font("Helvetica").text("Faculty & Staff Portal", { align: "center" });
