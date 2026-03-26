@@ -3,9 +3,11 @@ const FormTemplate = require("../models/FormTemplate");
 const User = require("../models/User");
 const PDFDocument = require("pdfkit");
 const { renderGenAdminPdf } = require("../forms/genadmin/pdfGenerator");
+const { renderSecurityCampusLeavePermissionForFemaleStudentsPdf } = require("../forms/security/SecurityCampusLeavePermissionForFemaleStudents");
 const { getResponseValue } = require("../utils/pdfUtils");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
+const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
 
 // @desc Submit a form
 // Body: { templateId, responses, parentSubmissionId? }
@@ -222,8 +224,9 @@ const generateSubmissionPDF = async (req, res) => {
       return res.status(403).json({ message: "Not authorized to download" });
     }
 
-    const isGenAdmin =
-      submission.template && submission.template.code === GEN_ADMIN_TEMPLATE_CODE;
+    const templateCode = submission.template?.code || "";
+    const isGenAdmin = templateCode === GEN_ADMIN_TEMPLATE_CODE;
+    const isSecurityCampusLeaveFemale = templateCode === SECURITY_CAMPUS_LEAVE_FEMALE_CODE;
     const doc = new PDFDocument({ margin: isGenAdmin ? 70 : 50, size: "A4" });
 
     res.setHeader("Content-Type", "application/pdf");
@@ -236,6 +239,8 @@ const generateSubmissionPDF = async (req, res) => {
 
     if (isGenAdmin) {
       renderGenAdminPdf(doc, submission);
+    } else if (isSecurityCampusLeaveFemale) {
+      renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
     } else {
       // Header (logo placeholder + institute title)
       doc

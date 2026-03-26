@@ -4,6 +4,7 @@ const {
   getAllTemplates,
   getMyTemplates,
   getGenAdminTemplate,
+  getSecurityCampusLeaveTemplate,
 } = require("../controllers/formController");
 
 const protect = require("../middleware/authMiddleware");
@@ -21,5 +22,8 @@ router.get("/templates/me", protect, getMyTemplates);
 
 // Hardcoded General Administration Self Declaration template
 router.get("/general-administration-self-declaration/template", protect, getGenAdminTemplate);
+
+// Security – Campus Leaving Permission after 10:00 PM (For Female Students)
+router.get("/security-campus-leave-permission-female/template", protect, getSecurityCampusLeaveTemplate);
 
 module.exports = router;

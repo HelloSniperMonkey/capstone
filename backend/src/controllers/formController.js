@@ -1,6 +1,27 @@
 const FormTemplate = require("../models/FormTemplate");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
+const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+
+const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
+  code: SECURITY_CAMPUS_LEAVE_FEMALE_CODE,
+  title: "Campus Leaving Permission after 10:00 PM (For Female Students)",
+  description: "Permission form for female students leaving IIT Patna campus after 10:00 PM.",
+  section: "security",
+  fields: [
+    { label: "Name", name: "name", type: "text", required: true },
+    { label: "Roll No", name: "rollNo", type: "text", required: true },
+    { label: "Hostel Name", name: "hostelName", type: "text", required: true },
+    { label: "Gender", name: "gender", type: "text", required: false },
+    { label: "Date of Leaving", name: "dateOfLeaving", type: "date", required: true },
+    { label: "Reason for Leaving", name: "reasonForLeaving", type: "textarea", required: true },
+    { label: "Companion 1 Name", name: "companion1Name", type: "text", required: false },
+    { label: "Companion 1 Roll No", name: "companion1RollNo", type: "text", required: false },
+    { label: "Companion 2 Name", name: "companion2Name", type: "text", required: false },
+    { label: "Companion 2 Roll No", name: "companion2RollNo", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
 
 const getGenAdminTemplate = async (req, res) => {
   try {
@@ -30,6 +51,24 @@ const getGenAdminTemplate = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Failed to load general administration self declaration template" });
+  }
+};
+
+const getSecurityCampusLeaveTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: SECURITY_CAMPUS_LEAVE_FEMALE_CODE });
+
+    if (!template) {
+      template = await FormTemplate.create({
+        ...SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load security campus leave template" });
   }
 };
 
@@ -82,6 +121,15 @@ const getAllTemplates = async (req, res) => {
       });
     }
 
+    // Ensure Security Campus Leave (Female) template exists
+    let securityCampusLeaveTemplate = await FormTemplate.findOne({ code: SECURITY_CAMPUS_LEAVE_FEMALE_CODE });
+    if (!securityCampusLeaveTemplate) {
+      await FormTemplate.create({
+        ...SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
     const templates = await FormTemplate.find()
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
@@ -111,4 +159,5 @@ module.exports = {
   getAllTemplates,
   getMyTemplates,
   getGenAdminTemplate,
+  getSecurityCampusLeaveTemplate,
 };

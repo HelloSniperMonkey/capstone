@@ -54,6 +54,7 @@ const Layout = ({ children }) => {
         sx={{
           bgcolor: "primary.main",
           borderBottom: "1px solid rgba(255,255,255,0.12)",
+          borderRadius: 0,
         }}
       >
         <Toolbar sx={{ gap: 1, justifyContent: "space-between" }}>
