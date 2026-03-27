@@ -4,6 +4,7 @@ const {
   getAllTemplates,
   getMyTemplates,
   getGenAdminTemplate,
+  getGenAdminVehicleRequisitionTemplate,
   getSecurityCampusLeaveTemplate,
   getComputerCenterLdapAccountRequestTemplate,
 } = require("../controllers/formController");
@@ -23,6 +24,13 @@ router.get("/templates/me", protect, getMyTemplates);
 
 // Hardcoded General Administration Self Declaration template
 router.get("/general-administration-self-declaration/template", protect, getGenAdminTemplate);
+
+// Hardcoded General Administration Vehicle Requisition template
+router.get(
+  "/general-administration-vehicle-requisition-transport/template",
+  protect,
+  getGenAdminVehicleRequisitionTemplate
+);
 
 // Security – Campus Leaving Permission after 10:00 PM (For Female Students)
 router.get("/security-campus-leave-permission-female/template", protect, getSecurityCampusLeaveTemplate);

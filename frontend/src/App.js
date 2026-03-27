@@ -9,6 +9,7 @@ import BulkImport from "./pages/BulkImport";
 import Forms from "./pages/Forms";
 import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
+import VehicleRequisitionForTransportForm from "./forms/genadmin/VehicleRequisitionForTransportForm";
 import SecurityCampusLeavePermissionForFemaleStudents from "./forms/security/SecurityCampusLeavePermissionForFemaleStudents";
 import ComputerCenterLdapAccountRequestForm from "./forms/cc/ComputerCenterLdapAccountRequestForm";
 import Submissions from "./pages/Submissions";
@@ -71,6 +72,16 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <GenAdminForm />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/gen-admin-vehicle-requisition-transport"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <VehicleRequisitionForTransportForm />
               </Layout>
             </PrivateRoute>
           }
