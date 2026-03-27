@@ -46,7 +46,7 @@ const resolveSection = (template) => {
   ) {
     return "cc";
   }
-  if (section.includes("finance") || code.includes("finance")) return "fin";
+  if (section === "fin" || section.includes("finance") || code.includes("finance")) return "fin";
   if (section.includes("establishment") || code.includes("establishment")) return "estb";
   if (section.includes("security") || code.includes("security")) return "security";
 
@@ -218,10 +218,7 @@ const Forms = () => {
         </Typography>
       )}
 
-      {renderSection(
-        "genAdmin"
-      )}
-
+      {renderSection("genAdmin")}
       {renderSection("fac")}
       {renderSection("snp")}
       {renderSection("cc")}

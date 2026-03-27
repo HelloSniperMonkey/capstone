@@ -4,6 +4,7 @@ const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const GEN_ADMIN_VEHICLE_REQUISITION_CODE = "gen-admin-vehicle-requisition-transport";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
+const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE = "finance-procurement-recommendation-sanction-double-bid-inr";
 
 const GEN_ADMIN_TEMPLATE = {
   code: GEN_ADMIN_TEMPLATE_CODE,
@@ -115,6 +116,68 @@ const CC_LDAP_ACCOUNT_REQUEST_TEMPLATE = {
   approvalStages: [],
 };
 
+const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_TEMPLATE = {
+  code: FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE,
+  title: "Recommendation cum Sanction Sheet for Purchase (Double Bid Tendering - INR)",
+  description: "Finance procurement recommendation and sanction sheet for purchase through double bid tendering process.",
+  section: "fin",
+  fields: [
+    { label: "Purchase Of", name: "purchaseOf", type: "text", required: true },
+    { label: "Date", name: "sheetDate", type: "date", required: true },
+    { label: "NIQ/Tender No.", name: "niqTenderNo", type: "text", required: true },
+    { label: "NIQ/Tender Date", name: "niqTenderDate", type: "date", required: true },
+    { label: "Vendors Responded", name: "vendorsRespondedCount", type: "number", required: true },
+    { label: "Price Bids Opened On", name: "priceBidsOpenedOn", type: "date", required: false },
+    { label: "Purchase Committee Members", name: "purchaseCommitteeMembers", type: "textarea", required: false },
+    { label: "File No.", name: "fileNo", type: "text", required: false },
+    { label: "Year of Sanction", name: "yearOfSanction", type: "text", required: false },
+    { label: "Department", name: "department", type: "text", required: true },
+    { label: "Category", name: "category", type: "text", required: false },
+    { label: "Vendor Name", name: "vendorName", type: "text", required: true },
+    { label: "Vendor Address Line 1", name: "vendorAddressLine1", type: "text", required: false },
+    { label: "Vendor Address Line 2", name: "vendorAddressLine2", type: "text", required: false },
+
+    { label: "Item 1 Description", name: "item1Description", type: "text", required: false },
+    { label: "Item 1 Rate", name: "item1Rate", type: "text", required: false },
+    { label: "Item 1 Quantity", name: "item1Quantity", type: "text", required: false },
+    { label: "Item 1 Amount", name: "item1Amount", type: "text", required: false },
+
+    { label: "Item 2 Description", name: "item2Description", type: "text", required: false },
+    { label: "Item 2 Rate", name: "item2Rate", type: "text", required: false },
+    { label: "Item 2 Quantity", name: "item2Quantity", type: "text", required: false },
+    { label: "Item 2 Amount", name: "item2Amount", type: "text", required: false },
+
+    { label: "Item 3 Description", name: "item3Description", type: "text", required: false },
+    { label: "Item 3 Rate", name: "item3Rate", type: "text", required: false },
+    { label: "Item 3 Quantity", name: "item3Quantity", type: "text", required: false },
+    { label: "Item 3 Amount", name: "item3Amount", type: "text", required: false },
+
+    { label: "Item 4 Description", name: "item4Description", type: "text", required: false },
+    { label: "Item 4 Rate", name: "item4Rate", type: "text", required: false },
+    { label: "Item 4 Quantity", name: "item4Quantity", type: "text", required: false },
+    { label: "Item 4 Amount", name: "item4Amount", type: "text", required: false },
+
+    { label: "Item 5 Description", name: "item5Description", type: "text", required: false },
+    { label: "Item 5 Rate", name: "item5Rate", type: "text", required: false },
+    { label: "Item 5 Quantity", name: "item5Quantity", type: "text", required: false },
+    { label: "Item 5 Amount", name: "item5Amount", type: "text", required: false },
+
+    { label: "GST Percentage", name: "gstPercentage", type: "text", required: false },
+    { label: "GST Amount", name: "gstAmount", type: "text", required: false },
+    { label: "Additional Charge 1 Label", name: "additionalCharge1Label", type: "text", required: false },
+    { label: "Additional Charge 1 Amount", name: "additionalCharge1Amount", type: "text", required: false },
+    { label: "Additional Charge 2 Label", name: "additionalCharge2Label", type: "text", required: false },
+    { label: "Additional Charge 2 Amount", name: "additionalCharge2Amount", type: "text", required: false },
+    { label: "Total Amount", name: "totalAmount", type: "text", required: false },
+
+    { label: "Member 1", name: "member1", type: "text", required: false },
+    { label: "Member 2", name: "member2", type: "text", required: false },
+    { label: "Member 3", name: "member3", type: "text", required: false },
+    { label: "Member 4", name: "member4", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
 const getGenAdminTemplate = async (req, res) => {
   try {
     let template = await FormTemplate.findOne({ code: GEN_ADMIN_TEMPLATE_CODE });
@@ -187,6 +250,33 @@ const getComputerCenterLdapAccountRequestTemplate = async (req, res) => {
   }
 };
 
+const getFinanceProcurementRecommendationSanctionTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE });
+
+    if (!template) {
+      template = await FormTemplate.create({
+        ...FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    } else {
+      const signatureFieldNames = ["hodName", "registrarName", "directorName"];
+      const currentFields = Array.isArray(template.fields) ? template.fields : [];
+      const filteredFields = currentFields.filter((field) => !signatureFieldNames.includes(field.name));
+
+      if (filteredFields.length !== currentFields.length) {
+        template.fields = filteredFields;
+        await template.save();
+      }
+    }
+
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load finance procurement recommendation sanction template" });
+  }
+};
+
 // @desc Create new form template
 const createTemplate = async (req, res) => {
   try {
@@ -250,6 +340,17 @@ const getAllTemplates = async (req, res) => {
       });
     }
 
+    // Ensure Finance procurement recommendation sanction template exists
+    let financeProcurementRecommendationSanctionTemplate = await FormTemplate.findOne({
+      code: FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE,
+    });
+    if (!financeProcurementRecommendationSanctionTemplate) {
+      await FormTemplate.create({
+        ...FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
     const templates = await FormTemplate.find()
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
@@ -282,4 +383,5 @@ module.exports = {
   getGenAdminVehicleRequisitionTemplate,
   getSecurityCampusLeaveTemplate,
   getComputerCenterLdapAccountRequestTemplate,
+  getFinanceProcurementRecommendationSanctionTemplate,
 };
