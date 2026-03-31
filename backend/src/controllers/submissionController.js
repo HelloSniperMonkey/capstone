@@ -5,7 +5,11 @@ const PDFDocument = require("pdfkit");
 const { renderGenAdminPdf } = require("../forms/genadmin/pdfGenerator");
 const { renderGenAdminVehicleRequisitionPdf } = require("../forms/genadmin/VehicleRequisitionForTransport");
 const { renderSecurityCampusLeavePermissionForFemaleStudentsPdf } = require("../forms/security/SecurityCampusLeavePermissionForFemaleStudents");
+const { renderSecurityRequisitionForVehicleStickerPdf } = require("../forms/security/SecurityRequisitionForVehicleSticker");
 const { renderSecurityVehicleStickerRequitionForMarriedScholarPdf } = require("../forms/security/SecurityVehicleStickerRequitionForMarriedScholar");
+const {
+  renderSecurityUndertakingRegardingWorkerConductAndResponsibilityPdf,
+} = require("../forms/security/SecurityUndertakingRegardingWorkerConductAndResponsibility");
 const { renderComputerCenterRequestingLdapAccountPdf } = require("../forms/cc/ComputerCenterRequestingLdapAccountCreationOfProjectStaffTemporaryStaff");
 const { renderFinanceProcurementRecommendationSanctionPdf } = require("../forms/fin/RecommendationCumSanctionSheetForPurchaseDoubleBidInr");
 const { renderComputerCenterFacultyPerformaPdf } = require("../forms/cc/ComputerCenterFacultyPerformaForm");
@@ -17,7 +21,10 @@ const { getResponseValue } = require("../utils/pdfUtils");
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const GEN_ADMIN_VEHICLE_REQUISITION_CODE = "gen-admin-vehicle-requisition-transport";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE = "security_requisition_for_vehicle_sticker";
 const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE = "security-vehicle-sticker-requition-for-married-scholar";
+const SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE =
+  "security_undertaking_regarding_worker_conduct_and_responsibility";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
 const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE = "finance-procurement-recommendation-sanction-double-bid-inr";
 const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
@@ -244,8 +251,11 @@ const generateSubmissionPDF = async (req, res) => {
     const isGenAdmin = templateCode === GEN_ADMIN_TEMPLATE_CODE;
     const isGenAdminVehicleRequisition = templateCode === GEN_ADMIN_VEHICLE_REQUISITION_CODE;
     const isSecurityCampusLeaveFemale = templateCode === SECURITY_CAMPUS_LEAVE_FEMALE_CODE;
+    const isSecurityRequisitionForVehicleSticker = templateCode === SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE;
     const isSecurityVehicleStickerRequitionForMarriedScholar =
       templateCode === SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE;
+    const isSecurityUndertakingRegardingWorkerConductAndResponsibility =
+      templateCode === SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE;
     const isComputerCenterLdapRequest = templateCode === CC_LDAP_ACCOUNT_REQUEST_CODE;
     const isFinanceProcurementRecommendationSanction =
       templateCode === FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE;
@@ -258,7 +268,9 @@ const generateSubmissionPDF = async (req, res) => {
         ? 70
         : isGenAdminVehicleRequisition
         ? 52
-        : isFinanceProcurementRecommendationSanction || isSecurityVehicleStickerRequitionForMarriedScholar
+        : isFinanceProcurementRecommendationSanction ||
+          isSecurityRequisitionForVehicleSticker ||
+          isSecurityVehicleStickerRequitionForMarriedScholar
         ? 45
         : 50,
       size: "A4",
@@ -278,8 +290,12 @@ const generateSubmissionPDF = async (req, res) => {
       renderGenAdminVehicleRequisitionPdf(doc, submission);
     } else if (isSecurityCampusLeaveFemale) {
       renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
+    } else if (isSecurityRequisitionForVehicleSticker) {
+      renderSecurityRequisitionForVehicleStickerPdf(doc, submission);
     } else if (isSecurityVehicleStickerRequitionForMarriedScholar) {
       renderSecurityVehicleStickerRequitionForMarriedScholarPdf(doc, submission);
+    } else if (isSecurityUndertakingRegardingWorkerConductAndResponsibility) {
+      renderSecurityUndertakingRegardingWorkerConductAndResponsibilityPdf(doc, submission);
     } else if (isComputerCenterLdapRequest) {
       renderComputerCenterRequestingLdapAccountPdf(doc, submission);
     } else if (isFinanceProcurementRecommendationSanction) {

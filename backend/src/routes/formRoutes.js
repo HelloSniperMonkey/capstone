@@ -6,7 +6,9 @@ const {
   getGenAdminTemplate,
   getGenAdminVehicleRequisitionTemplate,
   getSecurityCampusLeaveTemplate,
+  getSecurityRequisitionForVehicleStickerTemplate,
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
+  getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate,
   getComputerCenterLdapAccountRequestTemplate,
   getFinanceProcurementRecommendationSanctionTemplate,
   getComputerCenterFacultyPerformaTemplate,
@@ -41,11 +43,25 @@ router.get(
 // Security – Campus Leaving Permission after 10:00 PM (For Female Students)
 router.get("/security-campus-leave-permission-female/template", protect, getSecurityCampusLeaveTemplate);
 
+// Security - Requisition for Vehicle Sticker
+router.get(
+  "/security_requisition_for_vehicle_sticker/template",
+  protect,
+  getSecurityRequisitionForVehicleStickerTemplate
+);
+
 // Security – Requisition for Vehicle Sticker (Resident of Married Accommodation Only)
 router.get(
   "/security-vehicle-sticker-requition-for-married-scholar/template",
   protect,
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate
+);
+
+// Security - Undertaking regarding worker conduct and responsibility
+router.get(
+  "/security_undertaking_regarding_worker_conduct_and_responsibility/template",
+  protect,
+  getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate
 );
 
 // Computer Center – REQUEST / REQUISITION FORM (For LDAP Account)

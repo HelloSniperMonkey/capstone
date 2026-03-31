@@ -11,7 +11,9 @@ import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
 import VehicleRequisitionForTransportForm from "./forms/genadmin/VehicleRequisitionForTransportForm";
 import SecurityCampusLeavePermissionForFemaleStudents from "./forms/security/SecurityCampusLeavePermissionForFemaleStudents";
+import SecurityRequisitionForVehicleSticker from "./forms/security/SecurityRequisitionForVehicleSticker";
 import SecurityVehicleStickerRequitionForMarriedScholar from "./forms/security/SecurityVehicleStickerRequitionForMarriedScholar";
+import SecurityUndertakingRegardingWorkerConductAndResponsibility from "./forms/security/SecurityUndertakingRegardingWorkerConductAndResponsibility";
 import ComputerCenterLdapAccountRequestForm from "./forms/cc/ComputerCenterLdapAccountRequestForm";
 import ComputerCenterFacultyPerformaForm from "./forms/cc/ComputerCenterFacultyPerformaForm";
 import ComputerCenterFacultyDeclarationForm from "./forms/cc/ComputerCenterFacultyDeclarationForm";
@@ -103,11 +105,31 @@ function App() {
           }
         />
         <Route
+          path="/forms/security_requisition_for_vehicle_sticker"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityRequisitionForVehicleSticker />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/forms/security-vehicle-sticker-requition-for-married-scholar"
           element={
             <PrivateRoute>
               <Layout>
                 <SecurityVehicleStickerRequitionForMarriedScholar />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/security_undertaking_regarding_worker_conduct_and_responsibility"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityUndertakingRegardingWorkerConductAndResponsibility />
               </Layout>
             </PrivateRoute>
           }

@@ -3,7 +3,10 @@ const FormTemplate = require("../models/FormTemplate");
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const GEN_ADMIN_VEHICLE_REQUISITION_CODE = "gen-admin-vehicle-requisition-transport";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE = "security_requisition_for_vehicle_sticker";
 const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE = "security-vehicle-sticker-requition-for-married-scholar";
+const SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE =
+  "security_undertaking_regarding_worker_conduct_and_responsibility";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
 const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE = "finance-procurement-recommendation-sanction-double-bid-inr";
 const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
@@ -102,6 +105,33 @@ const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
   approvalStages: [],
 };
 
+const SECURITY_REQUISITION_FOR_VEHICLE_STICKER_TEMPLATE = {
+  code: SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE,
+  title: "Requisition for Vehicle Sticker",
+  description: "Security requisition form for issue of vehicle sticker.",
+  section: "security",
+  fields: [
+    { label: "Name of the employee", name: "employeeName", type: "text", required: true },
+    { label: "Ownership of the Vehicle", name: "vehicleOwnership", type: "text", required: true },
+    { label: "Employee No.", name: "employeeNo", type: "text", required: true },
+    { label: "Designation", name: "designation", type: "text", required: true },
+    { label: "Department / Section", name: "departmentSection", type: "text", required: true },
+    { label: "Residential Address", name: "residentialAddress", type: "textarea", required: true },
+    { label: "Mobile No.", name: "mobileNo", type: "text", required: true },
+    { label: "Institute e-mail ID", name: "instituteEmailId", type: "text", required: true },
+    { label: "Vehicle Number", name: "vehicleNumber", type: "text", required: true },
+    { label: "Engine Number", name: "engineNumber", type: "text", required: true },
+    { label: "Chassis No.", name: "chassisNo", type: "text", required: true },
+    { label: "Type of Vehicle", name: "vehicleType", type: "text", required: true },
+    { label: "Signature with date", name: "signatureWithDate", type: "text", required: false },
+    { label: "Vehicle Sticker No. (Office Use)", name: "officeVehicleStickerNo", type: "text", required: false },
+    { label: "Date of issue (Office Use)", name: "officeDateOfIssue", type: "date", required: false },
+    { label: "Office Note", name: "officeNote", type: "textarea", required: false },
+    { label: "Signature of Security Officer", name: "securityOfficerSignature", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
 const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_TEMPLATE = {
   code: SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE,
   title: "Requisition for Vehicle Sticker (Resident of Married Accommodation Only)",
@@ -126,6 +156,21 @@ const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_TEMPLATE = {
     { label: "Date of issue (Office Use)", name: "officeDateOfIssue", type: "date", required: false },
     { label: "Office Note", name: "officeNote", type: "textarea", required: false },
     { label: "Signature of Security Officer", name: "securityOfficerSignature", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
+const SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_TEMPLATE = {
+  code: SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE,
+  title: "Undertaking regarding the Conduct & Responsibility of Mess Workers",
+  description: "Undertaking form for mess contractor regarding worker conduct and responsibility.",
+  section: "security",
+  fields: [
+    { label: "Name", name: "name", type: "text", required: true },
+    { label: "Designation", name: "designation", type: "text", required: true },
+    { label: "Firm's Name", name: "firmName", type: "text", required: true },
+    { label: "Mobile No.", name: "mobileNo", type: "text", required: true },
+    { label: "Email id", name: "emailId", type: "text", required: false },
   ],
   approvalStages: [],
 };
@@ -365,6 +410,24 @@ const getSecurityCampusLeaveTemplate = async (req, res) => {
   }
 };
 
+const getSecurityRequisitionForVehicleStickerTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE });
+
+    if (!template) {
+      template = await FormTemplate.create({
+        ...SECURITY_REQUISITION_FOR_VEHICLE_STICKER_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load security requisition for vehicle sticker template" });
+  }
+};
+
 const getSecurityVehicleStickerRequitionForMarriedScholarTemplate = async (req, res) => {
   try {
     let template = await FormTemplate.findOne({ code: SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE });
@@ -380,6 +443,36 @@ const getSecurityVehicleStickerRequitionForMarriedScholarTemplate = async (req, 
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Failed to load security vehicle sticker requisition template" });
+  }
+};
+
+const getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({
+      code: SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE,
+    });
+
+    if (!template) {
+      template = await FormTemplate.create({
+        ...SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    } else {
+      const currentFields = Array.isArray(template.fields) ? template.fields : [];
+      const filteredFields = currentFields.filter((field) => field.name !== "signature");
+
+      if (filteredFields.length !== currentFields.length) {
+        template.fields = filteredFields;
+        await template.save();
+      }
+    }
+
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Failed to load security undertaking regarding worker conduct and responsibility template" });
   }
 };
 
@@ -545,6 +638,17 @@ const getAllTemplates = async (req, res) => {
       });
     }
 
+    // Ensure Security requisition for vehicle sticker template exists
+    let securityRequisitionForVehicleStickerTemplate = await FormTemplate.findOne({
+      code: SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE,
+    });
+    if (!securityRequisitionForVehicleStickerTemplate) {
+      await FormTemplate.create({
+        ...SECURITY_REQUISITION_FOR_VEHICLE_STICKER_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
     // Ensure Security vehicle sticker requisition template exists
     let securityVehicleStickerTemplate = await FormTemplate.findOne({
       code: SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE,
@@ -552,6 +656,17 @@ const getAllTemplates = async (req, res) => {
     if (!securityVehicleStickerTemplate) {
       await FormTemplate.create({
         ...SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
+    // Ensure Security undertaking regarding worker conduct and responsibility template exists
+    let securityUndertakingTemplate = await FormTemplate.findOne({
+      code: SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE,
+    });
+    if (!securityUndertakingTemplate) {
+      await FormTemplate.create({
+        ...SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_TEMPLATE,
         createdBy: req.user?.id || null,
       });
     }
@@ -652,7 +767,9 @@ module.exports = {
   getGenAdminTemplate,
   getGenAdminVehicleRequisitionTemplate,
   getSecurityCampusLeaveTemplate,
+  getSecurityRequisitionForVehicleStickerTemplate,
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
+  getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate,
   getComputerCenterLdapAccountRequestTemplate,
   getFinanceProcurementRecommendationSanctionTemplate,
   getComputerCenterFacultyPerformaTemplate,

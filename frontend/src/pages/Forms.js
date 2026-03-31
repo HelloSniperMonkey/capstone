@@ -15,6 +15,14 @@ import API from "../services/api";
 
 const FALLBACK_TEMPLATES = [
   {
+    _id: "fallback-security_requisition_for_vehicle_sticker",
+    code: "security_requisition_for_vehicle_sticker",
+    title: "Requisition for Vehicle Sticker",
+    description: "Security requisition form for issue of vehicle sticker.",
+    section: "security",
+    approvalStages: [],
+  },
+  {
     _id: "fallback-security-vehicle-sticker-requition-for-married-scholar",
     code: "security-vehicle-sticker-requition-for-married-scholar",
     title: "Requisition for Vehicle Sticker (Resident of Married Accommodation Only)",
