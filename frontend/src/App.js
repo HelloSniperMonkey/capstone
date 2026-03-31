@@ -11,6 +11,7 @@ import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
 import VehicleRequisitionForTransportForm from "./forms/genadmin/VehicleRequisitionForTransportForm";
 import SecurityCampusLeavePermissionForFemaleStudents from "./forms/security/SecurityCampusLeavePermissionForFemaleStudents";
+import SecurityVehicleStickerRequitionForMarriedScholar from "./forms/security/SecurityVehicleStickerRequitionForMarriedScholar";
 import ComputerCenterLdapAccountRequestForm from "./forms/cc/ComputerCenterLdapAccountRequestForm";
 import ComputerCenterFacultyPerformaForm from "./forms/cc/ComputerCenterFacultyPerformaForm";
 import ComputerCenterFacultyDeclarationForm from "./forms/cc/ComputerCenterFacultyDeclarationForm";
@@ -97,6 +98,16 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <SecurityCampusLeavePermissionForFemaleStudents />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/security-vehicle-sticker-requition-for-married-scholar"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityVehicleStickerRequitionForMarriedScholar />
               </Layout>
             </PrivateRoute>
           }

@@ -3,6 +3,7 @@ const FormTemplate = require("../models/FormTemplate");
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const GEN_ADMIN_VEHICLE_REQUISITION_CODE = "gen-admin-vehicle-requisition-transport";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE = "security-vehicle-sticker-requition-for-married-scholar";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
 const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE = "finance-procurement-recommendation-sanction-double-bid-inr";
 const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
@@ -97,6 +98,34 @@ const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
     { label: "Companion 1 Roll No", name: "companion1RollNo", type: "text", required: false },
     { label: "Companion 2 Name", name: "companion2Name", type: "text", required: false },
     { label: "Companion 2 Roll No", name: "companion2RollNo", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
+const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_TEMPLATE = {
+  code: SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE,
+  title: "Requisition for Vehicle Sticker (Resident of Married Accommodation Only)",
+  description: "Security requisition form for issue of vehicle sticker for married accommodation residents.",
+  section: "security",
+  fields: [
+    { label: "Name of the employee", name: "employeeName", type: "text", required: true },
+    { label: "Ownership of the Vehicle", name: "vehicleOwnership", type: "text", required: true },
+    { label: "Roll No.", name: "rollNo", type: "text", required: true },
+    { label: "Department", name: "department", type: "text", required: true },
+    { label: "Residential Address", name: "residentialAddress", type: "textarea", required: true },
+    { label: "Mobile No.", name: "mobileNo", type: "text", required: true },
+    { label: "Institute e-mail ID", name: "instituteEmailId", type: "text", required: true },
+    { label: "Vehicle Number", name: "vehicleNumber", type: "text", required: true },
+    { label: "Engine Number", name: "engineNumber", type: "text", required: true },
+    { label: "Chassis No.", name: "chassisNo", type: "text", required: true },
+    { label: "Type of Vehicle", name: "vehicleType", type: "text", required: true },
+    { label: "Signature with date", name: "signatureWithDate", type: "text", required: false },
+    { label: "Recommendation by Supervisor", name: "supervisorRecommendation", type: "textarea", required: false },
+    { label: "Remarks by HoD", name: "hodRemarks", type: "textarea", required: false },
+    { label: "Vehicle Sticker No. (Office Use)", name: "officeVehicleStickerNo", type: "text", required: false },
+    { label: "Date of issue (Office Use)", name: "officeDateOfIssue", type: "date", required: false },
+    { label: "Office Note", name: "officeNote", type: "textarea", required: false },
+    { label: "Signature of Security Officer", name: "securityOfficerSignature", type: "text", required: false },
   ],
   approvalStages: [],
 };
@@ -336,6 +365,24 @@ const getSecurityCampusLeaveTemplate = async (req, res) => {
   }
 };
 
+const getSecurityVehicleStickerRequitionForMarriedScholarTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE });
+
+    if (!template) {
+      template = await FormTemplate.create({
+        ...SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load security vehicle sticker requisition template" });
+  }
+};
+
 const getComputerCenterLdapAccountRequestTemplate = async (req, res) => {
   try {
     let template = await FormTemplate.findOne({ code: CC_LDAP_ACCOUNT_REQUEST_CODE });
@@ -498,6 +545,17 @@ const getAllTemplates = async (req, res) => {
       });
     }
 
+    // Ensure Security vehicle sticker requisition template exists
+    let securityVehicleStickerTemplate = await FormTemplate.findOne({
+      code: SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE,
+    });
+    if (!securityVehicleStickerTemplate) {
+      await FormTemplate.create({
+        ...SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
     // Ensure Computer Center LDAP account request template exists
     let ccLdapTemplate = await FormTemplate.findOne({ code: CC_LDAP_ACCOUNT_REQUEST_CODE });
     if (!ccLdapTemplate) {
@@ -594,6 +652,7 @@ module.exports = {
   getGenAdminTemplate,
   getGenAdminVehicleRequisitionTemplate,
   getSecurityCampusLeaveTemplate,
+  getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
   getComputerCenterLdapAccountRequestTemplate,
   getFinanceProcurementRecommendationSanctionTemplate,
   getComputerCenterFacultyPerformaTemplate,

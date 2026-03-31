@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Container,
   Typography,
@@ -12,6 +12,17 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+
+const FALLBACK_TEMPLATES = [
+  {
+    _id: "fallback-security-vehicle-sticker-requition-for-married-scholar",
+    code: "security-vehicle-sticker-requition-for-married-scholar",
+    title: "Requisition for Vehicle Sticker (Resident of Married Accommodation Only)",
+    description: "Security requisition form for issue of vehicle sticker for married accommodation residents.",
+    section: "security",
+    approvalStages: [],
+  },
+];
 
 const SECTION_TITLES = {
   genAdmin: "General Administration",
@@ -74,7 +85,21 @@ const Forms = () => {
     load();
   }, []);
 
-  const sectionBuckets = templates.reduce(
+  const templatesWithFallback = useMemo(() => {
+    const existingCodes = new Set(
+      (templates || [])
+        .map((tpl) => String(tpl?.code || "").toLowerCase())
+        .filter(Boolean)
+    );
+
+    const missingFallbacks = FALLBACK_TEMPLATES.filter(
+      (tpl) => !existingCodes.has(String(tpl.code || "").toLowerCase())
+    );
+
+    return [...templates, ...missingFallbacks];
+  }, [templates]);
+
+  const sectionBuckets = templatesWithFallback.reduce(
     (acc, tpl) => {
       const key = resolveSection(tpl);
       acc[key].push(tpl);

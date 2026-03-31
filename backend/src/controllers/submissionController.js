@@ -5,6 +5,7 @@ const PDFDocument = require("pdfkit");
 const { renderGenAdminPdf } = require("../forms/genadmin/pdfGenerator");
 const { renderGenAdminVehicleRequisitionPdf } = require("../forms/genadmin/VehicleRequisitionForTransport");
 const { renderSecurityCampusLeavePermissionForFemaleStudentsPdf } = require("../forms/security/SecurityCampusLeavePermissionForFemaleStudents");
+const { renderSecurityVehicleStickerRequitionForMarriedScholarPdf } = require("../forms/security/SecurityVehicleStickerRequitionForMarriedScholar");
 const { renderComputerCenterRequestingLdapAccountPdf } = require("../forms/cc/ComputerCenterRequestingLdapAccountCreationOfProjectStaffTemporaryStaff");
 const { renderFinanceProcurementRecommendationSanctionPdf } = require("../forms/fin/RecommendationCumSanctionSheetForPurchaseDoubleBidInr");
 const { renderComputerCenterFacultyPerformaPdf } = require("../forms/cc/ComputerCenterFacultyPerformaForm");
@@ -16,6 +17,7 @@ const { getResponseValue } = require("../utils/pdfUtils");
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const GEN_ADMIN_VEHICLE_REQUISITION_CODE = "gen-admin-vehicle-requisition-transport";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE = "security-vehicle-sticker-requition-for-married-scholar";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
 const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE = "finance-procurement-recommendation-sanction-double-bid-inr";
 const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
@@ -242,6 +244,8 @@ const generateSubmissionPDF = async (req, res) => {
     const isGenAdmin = templateCode === GEN_ADMIN_TEMPLATE_CODE;
     const isGenAdminVehicleRequisition = templateCode === GEN_ADMIN_VEHICLE_REQUISITION_CODE;
     const isSecurityCampusLeaveFemale = templateCode === SECURITY_CAMPUS_LEAVE_FEMALE_CODE;
+    const isSecurityVehicleStickerRequitionForMarriedScholar =
+      templateCode === SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE;
     const isComputerCenterLdapRequest = templateCode === CC_LDAP_ACCOUNT_REQUEST_CODE;
     const isFinanceProcurementRecommendationSanction =
       templateCode === FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE;
@@ -250,7 +254,13 @@ const generateSubmissionPDF = async (req, res) => {
     const isComputerCenterEmailAccountRequest = templateCode === CC_EMAIL_ACCOUNT_REQUEST_CODE;
     const isComputerCenterProxyLdapRequest = templateCode === CC_PROXY_LDAP_REQUEST_CODE;
     const doc = new PDFDocument({
-      margin: isGenAdmin ? 70 : isGenAdminVehicleRequisition ? 52 : isFinanceProcurementRecommendationSanction ? 45 : 50,
+      margin: isGenAdmin
+        ? 70
+        : isGenAdminVehicleRequisition
+        ? 52
+        : isFinanceProcurementRecommendationSanction || isSecurityVehicleStickerRequitionForMarriedScholar
+        ? 45
+        : 50,
       size: "A4",
     });
 
@@ -268,6 +278,8 @@ const generateSubmissionPDF = async (req, res) => {
       renderGenAdminVehicleRequisitionPdf(doc, submission);
     } else if (isSecurityCampusLeaveFemale) {
       renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
+    } else if (isSecurityVehicleStickerRequitionForMarriedScholar) {
+      renderSecurityVehicleStickerRequitionForMarriedScholarPdf(doc, submission);
     } else if (isComputerCenterLdapRequest) {
       renderComputerCenterRequestingLdapAccountPdf(doc, submission);
     } else if (isFinanceProcurementRecommendationSanction) {
