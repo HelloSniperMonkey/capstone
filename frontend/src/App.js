@@ -6,6 +6,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import BulkImport from "./pages/BulkImport";
+import ChangePassword from "./pages/ChangePassword";
 import Forms from "./pages/Forms";
 import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
@@ -175,6 +176,16 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <Approvals />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ChangePassword />
               </Layout>
             </PrivateRoute>
           }
