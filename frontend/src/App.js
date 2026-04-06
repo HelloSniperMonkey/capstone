@@ -25,6 +25,7 @@ import ComputerCenterFacultyPerformaForm from "./forms/cc/ComputerCenterFacultyP
 import ComputerCenterFacultyDeclarationForm from "./forms/cc/ComputerCenterFacultyDeclarationForm";
 import ComputerCenterEmailAccountRequestForm from "./forms/cc/ComputerCenterEmailAccountRequestForm";
 import ComputerCenterProxyLdapAccountRequestForm from "./forms/cc/ComputerCenterProxyLdapAccountRequestForm";
+import ComputerCenterRDRecommendationGeM from "./forms/cc/CCRDRecommendationDirectPurchaseGeM";
 import FinanceProcurementRecommendationSanctionForm from "./forms/fin/RecommendationCumSanctionSheetForPurchaseDoubleBidInrForm";
 import Submissions from "./pages/Submissions";
 import Approvals from "./pages/Approvals";
@@ -170,7 +171,7 @@ function App() {
             </PrivateRoute>
           }
         />
-       <Route
+        <Route
           path="/forms/security_undertaking_regarding_worker_conduct_and_responsibility"
           element={
             <PrivateRoute>
@@ -256,6 +257,26 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <ComputerCenterProxyLdapAccountRequestForm />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/cc-rd-recommendation-gem"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ComputerCenterRDRecommendationGeM />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/computer-center-rd-recommendation-gem"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ComputerCenterRDRecommendationGeM />
               </Layout>
             </PrivateRoute>
           }

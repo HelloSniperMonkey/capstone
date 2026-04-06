@@ -14,12 +14,13 @@ const {
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
   getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate,
   getComputerCenterLdapAccountRequestTemplate,
- getEstbDepartureRejoiningTemplate,
+  getEstbDepartureRejoiningTemplate,
   getFinanceProcurementRecommendationSanctionTemplate,
   getComputerCenterFacultyPerformaTemplate,
   getComputerCenterFacultyDeclarationTemplate,
   getComputerCenterEmailAccountRequestTemplate,
   getComputerCenterProxyLdapRequestTemplate,
+  getComputerCenterRDRecommendationGeMTemplate,
 } = require("../controllers/formController");
 
 const protect = require("../middleware/authMiddleware");
@@ -82,6 +83,8 @@ router.get(
 
 // Computer Center – REQUEST / REQUISITION FORM (For LDAP Account)
 router.get("/computer-center-ldap-account-request/template", protect, getComputerCenterLdapAccountRequestTemplate);
+
+// Establishment – Departure & Re-joining Report
 router.get("/estb-departure-rejoining-report/template", protect, getEstbDepartureRejoiningTemplate);
 
 // Finance - Recommendation cum Sanction Sheet for Purchase (Double Bid Tendering - INR)
@@ -102,5 +105,8 @@ router.get("/computer-center-email-account-request/template", protect, getComput
 
 // Computer Center - Proxy LDAP Request Form
 router.get("/computer-center-proxy-ldap-request/template", protect, getComputerCenterProxyLdapRequestTemplate);
+
+// Computer Center - R&D cum CC Recommendation for Direct Purchase through GeM
+router.get("/computer-center-rd-recommendation-gem/template", protect, getComputerCenterRDRecommendationGeMTemplate);
 
 module.exports = router;

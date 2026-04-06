@@ -17,6 +17,7 @@ const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
 const CC_FACULTY_DECLARATION_CODE = "cc-faculty-declaration";
 const CC_EMAIL_ACCOUNT_REQUEST_CODE = "cc-email-account-request";
 const CC_PROXY_LDAP_REQUEST_CODE = "cc-proxy-ldap-request";
+const CC_RD_RECOMMENDATION_GEM_CODE = "cc-rd-recommendation-gem";
 
 const GEN_ADMIN_TEMPLATE = {
   code: GEN_ADMIN_TEMPLATE_CODE,
@@ -109,7 +110,7 @@ const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
   approvalStages: [],
 };
 const ESTB_DEPARTURE_REJOINING_CODE = "estb-departure-rejoining-report";
- 
+
 const ESTB_DEPARTURE_REJOINING_TEMPLATE = {
   code: ESTB_DEPARTURE_REJOINING_CODE,
   title: "Departure & Re-joining Report",
@@ -474,6 +475,44 @@ const CC_PROXY_LDAP_REQUEST_TEMPLATE = {
   approvalStages: [],
 };
 
+const CC_RD_RECOMMENDATION_GEM_TEMPLATE = {
+  code: CC_RD_RECOMMENDATION_GEM_CODE,
+  title: "R&D cum CC Recommendation for Direct Purchase through GeM",
+  description: "Form No. P002 – Recommendation cum Sanction Sheet for purchase through GeM portal by Local Purchase Committee.",
+  section: "cc",
+  fields: [
+    { label: "Project No. (if applicable)", name: "projectNo", type: "text", required: false },
+    { label: "Date", name: "date", type: "date", required: true },
+    { label: "Item Being Purchased (short name for title line)", name: "itemDescription", type: "text", required: true },
+    { label: "Indent Date", name: "indentDate", type: "date", required: true },
+    { label: "Item Name (as in indent)", name: "indentItemName", type: "text", required: true },
+    { label: "Row 1 – Sr. No.", name: "srNo_1", type: "text", required: false },
+    { label: "Row 1 – Item Description", name: "itemDesc_1", type: "textarea", required: false },
+    { label: "Row 1 – Rate (Rs.)", name: "rate_1", type: "text", required: false },
+    { label: "Row 1 – Quantity", name: "qty_1", type: "text", required: false },
+    { label: "Row 1 – Total Price (Rs.)", name: "totalPrice_1", type: "text", required: false },
+    { label: "Row 2 – Sr. No.", name: "srNo_2", type: "text", required: false },
+    { label: "Row 2 – Item Description", name: "itemDesc_2", type: "textarea", required: false },
+    { label: "Row 2 – Rate (Rs.)", name: "rate_2", type: "text", required: false },
+    { label: "Row 2 – Quantity", name: "qty_2", type: "text", required: false },
+    { label: "Row 2 – Total Price (Rs.)", name: "totalPrice_2", type: "text", required: false },
+    { label: "Total Amount in Words", name: "amountInWords", type: "text", required: true },
+    { label: "Name of Item Recommended for Procurement", name: "recommendedItemName", type: "text", required: true },
+    { label: "Committee Member 1 – Name & Designation", name: "member1Name", type: "text", required: false },
+    { label: "Committee Member 2 – Name & Designation", name: "member2Name", type: "text", required: false },
+    { label: "Committee Member 3 – Name & Designation", name: "member3Name", type: "text", required: false },
+    { label: "Committee Member 4 – Name & Designation", name: "member4Name", type: "text", required: false },
+    { label: "JTS/TS (CC) – Name", name: "jtsName", type: "text", required: false },
+    { label: "HoD (CC) – Name", name: "hodCCName", type: "text", required: false },
+    { label: "Investigator(s) – Name", name: "investigatorName", type: "text", required: false },
+    { label: "AR(R&D) – Name", name: "arRDName", type: "text", required: false },
+    { label: "DR(R&D) – Name", name: "drRDName", type: "text", required: false },
+    { label: "Associate Dean (R&D) – Name", name: "aDeanRDName", type: "text", required: false },
+    { label: "Director – Name", name: "directorName", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
 const getGenAdminTemplate = async (req, res) => {
   try {
     let template = await FormTemplate.findOne({ code: GEN_ADMIN_TEMPLATE_CODE });
@@ -784,6 +823,24 @@ const getComputerCenterProxyLdapRequestTemplate = async (req, res) => {
   }
 };
 
+const getComputerCenterRDRecommendationGeMTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: CC_RD_RECOMMENDATION_GEM_CODE });
+
+    if (!template) {
+      template = await FormTemplate.create({
+        ...CC_RD_RECOMMENDATION_GEM_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load CC R&D recommendation GeM template" });
+  }
+};
+
 // @desc Create new form template
 const createTemplate = async (req, res) => {
   try {
@@ -850,7 +907,7 @@ const getAllTemplates = async (req, res) => {
       await FormTemplate.create({ ...SECURITY_ENTRY_PASS_TEMPLATE, createdBy: req.user?.id || null });
     }
 
-    // Ensure Security requisition for vehicle sticker template exists
+        // Ensure Security requisition for vehicle sticker template exists
     let securityRequisitionForVehicleStickerTemplate = await FormTemplate.findOne({
       code: SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE,
     });
@@ -883,7 +940,7 @@ const getAllTemplates = async (req, res) => {
       });
     }
 
-    // Ensure Computer Center LDAP account request template exists
+        // Ensure Computer Center LDAP account request template exists
     let ccLdapTemplate = await FormTemplate.findOne({ code: CC_LDAP_ACCOUNT_REQUEST_CODE });
     if (!ccLdapTemplate) {
       await FormTemplate.create({
@@ -892,14 +949,14 @@ const getAllTemplates = async (req, res) => {
       });
     }
     let estbDepartureTemplate = await FormTemplate.findOne({ code: ESTB_DEPARTURE_REJOINING_CODE });
-if (!estbDepartureTemplate) {
-  await FormTemplate.create({
-    ...ESTB_DEPARTURE_REJOINING_TEMPLATE,
-    createdBy: req.user?.id || null,
-  });
-}
-
-    // Ensure General Administration vehicle requisition template exists
+    if (!estbDepartureTemplate) {
+      await FormTemplate.create({
+        ...ESTB_DEPARTURE_REJOINING_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+    
+        // Ensure General Administration vehicle requisition template exists
     let genAdminVehicleRequisitionTemplate = await FormTemplate.findOne({ code: GEN_ADMIN_VEHICLE_REQUISITION_CODE });
     if (!genAdminVehicleRequisitionTemplate) {
       await FormTemplate.create({
@@ -919,7 +976,7 @@ if (!estbDepartureTemplate) {
       });
     }
 
-    // Ensure Computer Center Faculty Performa template exists
+        // Ensure Computer Center Faculty Performa template exists
     let ccFacultyPerformaTemplate = await FormTemplate.findOne({ code: CC_FACULTY_PERFORMA_CODE });
     if (!ccFacultyPerformaTemplate) {
       await FormTemplate.create({
@@ -928,7 +985,7 @@ if (!estbDepartureTemplate) {
       });
     }
 
-    // Ensure Computer Center Faculty Declaration template exists
+        // Ensure Computer Center Faculty Declaration template exists
     let ccFacultyDeclarationTemplate = await FormTemplate.findOne({ code: CC_FACULTY_DECLARATION_CODE });
     if (!ccFacultyDeclarationTemplate) {
       await FormTemplate.create({
@@ -946,11 +1003,19 @@ if (!estbDepartureTemplate) {
       });
     }
 
-    // Ensure Computer Center Proxy LDAP Request template exists
+        // Ensure Computer Center Proxy LDAP Request template exists
     let ccProxyLdapRequestTemplate = await FormTemplate.findOne({ code: CC_PROXY_LDAP_REQUEST_CODE });
     if (!ccProxyLdapRequestTemplate) {
       await FormTemplate.create({
         ...CC_PROXY_LDAP_REQUEST_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
+    let ccRdRecommendationGeMTemplate = await FormTemplate.findOne({ code: CC_RD_RECOMMENDATION_GEM_CODE });
+    if (!ccRdRecommendationGeMTemplate) {
+      await FormTemplate.create({
+        ...CC_RD_RECOMMENDATION_GEM_TEMPLATE,
         createdBy: req.user?.id || null,
       });
     }
@@ -994,10 +1059,11 @@ module.exports = {
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
   getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate,
   getComputerCenterLdapAccountRequestTemplate,
-   getEstbDepartureRejoiningTemplate,
+  getEstbDepartureRejoiningTemplate,
   getFinanceProcurementRecommendationSanctionTemplate,
   getComputerCenterFacultyPerformaTemplate,
   getComputerCenterFacultyDeclarationTemplate,
   getComputerCenterEmailAccountRequestTemplate,
   getComputerCenterProxyLdapRequestTemplate,
+  getComputerCenterRDRecommendationGeMTemplate,
 };

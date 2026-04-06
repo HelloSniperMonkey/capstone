@@ -21,6 +21,7 @@ const { renderComputerCenterFacultyPerformaPdf } = require("../forms/cc/Computer
 const { renderComputerCenterFacultyDeclarationPdf } = require("../forms/cc/ComputerCenterFacultyDeclarationForm");
 const { renderComputerCenterEmailAccountRequestPdf } = require("../forms/cc/ComputerCenterEmailAccountRequestForm");
 const { renderComputerCenterProxyLdapAccountRequestPdf } = require("../forms/cc/ComputerCenterProxyLdapAccountRequestForm");
+const { renderCCRDRecommendationDirectPurchaseGeMPdf } = require("../forms/cc/CCRDRecommendationDirectPurchaseGeM");
 const { getResponseValue } = require("../utils/pdfUtils");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
@@ -41,6 +42,7 @@ const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
 const CC_FACULTY_DECLARATION_CODE = "cc-faculty-declaration";
 const CC_EMAIL_ACCOUNT_REQUEST_CODE = "cc-email-account-request";
 const CC_PROXY_LDAP_REQUEST_CODE = "cc-proxy-ldap-request";
+const CC_RD_RECOMMENDATION_GEM_CODE = "cc-rd-recommendation-gem";
 
 // @desc Submit a form
 // Body: { templateId, responses, parentSubmissionId? }
@@ -292,6 +294,8 @@ const generateSubmissionPDF = async (req, res) => {
     const isComputerCenterFacultyDeclaration = templateCode === CC_FACULTY_DECLARATION_CODE;
     const isComputerCenterEmailAccountRequest = templateCode === CC_EMAIL_ACCOUNT_REQUEST_CODE;
     const isComputerCenterProxyLdapRequest = templateCode === CC_PROXY_LDAP_REQUEST_CODE;
+    const isCCRDRecommendationGeM = templateCode === CC_RD_RECOMMENDATION_GEM_CODE;
+
     const doc = new PDFDocument({
       margin: isGenAdmin
         ? 70
@@ -319,7 +323,7 @@ const generateSubmissionPDF = async (req, res) => {
       renderGenAdminVehicleRequisitionPdf(doc, submission);
     } else if (isSecurityCampusLeaveFemale) {
       renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
-    } else if (isSecurityDayScholarVehiclePermit) {
+      } else if (isSecurityDayScholarVehiclePermit) {
       renderSecurityDayScholarVehiclePermitPdf(doc, submission);
     } else if (isSecurityMessWorkers) {
       renderSecurityMessWorkersPdf(doc, submission);
@@ -347,6 +351,8 @@ const generateSubmissionPDF = async (req, res) => {
       renderComputerCenterEmailAccountRequestPdf(doc, submission);
     } else if (isComputerCenterProxyLdapRequest) {
       renderComputerCenterProxyLdapAccountRequestPdf(doc, submission);
+    } else if (isCCRDRecommendationGeM) {
+      renderCCRDRecommendationDirectPurchaseGeMPdf(doc, submission);
     } else {
       // Header (logo placeholder + institute title)
       doc
