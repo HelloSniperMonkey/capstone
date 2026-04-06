@@ -18,6 +18,7 @@ const CC_FACULTY_DECLARATION_CODE = "cc-faculty-declaration";
 const CC_EMAIL_ACCOUNT_REQUEST_CODE = "cc-email-account-request";
 const CC_PROXY_LDAP_REQUEST_CODE = "cc-proxy-ldap-request";
 const CC_RD_RECOMMENDATION_GEM_CODE = "cc-rd-recommendation-gem";
+const CC_RD_TWO_BID_GEM_CODE = "cc-rd-two-bid-gem";
 
 const GEN_ADMIN_TEMPLATE = {
   code: GEN_ADMIN_TEMPLATE_CODE,
@@ -513,6 +514,67 @@ const CC_RD_RECOMMENDATION_GEM_TEMPLATE = {
   approvalStages: [],
 };
 
+
+const CC_RD_TWO_BID_GEM_TEMPLATE = {
+  code: CC_RD_TWO_BID_GEM_CODE,
+  title: "R&D cum CC Recommendation for Two-Bid Purchase through GeM",
+  description: "Form No. P004 – Recommendation cum Sanction Sheet for purchase through GeM using Double Bid Tendering process.",
+  section: "cc",
+  fields: [
+    { label: "Project No. (if applicable)", name: "projectNo", type: "text", required: false },
+    { label: "Date", name: "date", type: "date", required: true },
+    { label: "Purchase Of (item name for title)", name: "purchaseOf", type: "text", required: true },
+    { label: "Supply Item Name (for quotation line)", name: "supplyItem", type: "text", required: true },
+    { label: "GeM Bid Reference No.", name: "gemBidRef", type: "text", required: true },
+    { label: "GeM Bid Date", name: "gemBidDate", type: "date", required: true },
+    { label: "Number of Vendors Responded", name: "vendorCount", type: "text", required: true },
+    { label: "No. of Technically Satisfied Firms", name: "techFirmsCount", type: "text", required: true },
+    { label: "Price Bids Opened On Date", name: "openedOnDate", type: "date", required: true },
+    { label: "Annexure No.", name: "annexureNo", type: "text", required: false },
+    { label: "Order For Item (committee recommends)", name: "orderForItem", type: "text", required: true },
+    { label: "Vendor M/s Name (lowest quoter)", name: "vendorMsName", type: "text", required: true },
+    { label: "File No.", name: "fileNo", type: "text", required: false },
+    { label: "Year of Sanction", name: "yearOfSanction", type: "text", required: false },
+    { label: "Department", name: "department", type: "text", required: true },
+    { label: "Category", name: "category", type: "text", required: false },
+    { label: "Vendor Label (e.g. Vendor-1:)", name: "vendorLabel", type: "text", required: false },
+    { label: "Vendor Name (M/s)", name: "vendorName", type: "text", required: true },
+    { label: "Vendor Address Line 1", name: "vendorAddr1", type: "text", required: false },
+    { label: "Vendor Address Line 2", name: "vendorAddr2", type: "text", required: false },
+    { label: "Item 1 Description", name: "item1Desc", type: "textarea", required: false },
+    { label: "Item 1 Rate", name: "item1Rate", type: "text", required: false },
+    { label: "Item 1 Quantity", name: "item1Qty", type: "text", required: false },
+    { label: "Item 1 Amount", name: "item1Amount", type: "text", required: false },
+    { label: "Item 2 Description", name: "item2Desc", type: "textarea", required: false },
+    { label: "Item 2 Rate", name: "item2Rate", type: "text", required: false },
+    { label: "Item 2 Quantity", name: "item2Qty", type: "text", required: false },
+    { label: "Item 2 Amount", name: "item2Amount", type: "text", required: false },
+    { label: "Item 3 Description", name: "item3Desc", type: "textarea", required: false },
+    { label: "Item 3 Rate", name: "item3Rate", type: "text", required: false },
+    { label: "Item 3 Quantity", name: "item3Qty", type: "text", required: false },
+    { label: "Item 3 Amount", name: "item3Amount", type: "text", required: false },
+    { label: "Extra Row 1 Label", name: "extraRow1Label", type: "text", required: false },
+    { label: "Extra Row 1 Amount", name: "extraRow1Amount", type: "text", required: false },
+    { label: "Extra Row 2 Label", name: "extraRow2Label", type: "text", required: false },
+    { label: "Extra Row 2 Amount", name: "extraRow2Amount", type: "text", required: false },
+    { label: "GST Percentage (%)", name: "gstPercent", type: "text", required: false },
+    { label: "GST Amount", name: "gstAmount", type: "text", required: false },
+    { label: "Total Amount", name: "totalAmount", type: "text", required: true },
+    { label: "Committee Member 1 - Name & Designation", name: "member1Name", type: "text", required: false },
+    { label: "Committee Member 2 - Name & Designation", name: "member2Name", type: "text", required: false },
+    { label: "Committee Member 3 - Name & Designation", name: "member3Name", type: "text", required: false },
+    { label: "Committee Member 4 - Name & Designation", name: "member4Name", type: "text", required: false },
+    { label: "JTS/TS (CC) - Name", name: "jtsName", type: "text", required: false },
+    { label: "HoD (CC) - Name", name: "hodCCName", type: "text", required: false },
+    { label: "Investigator(s) - Name", name: "investigatorName", type: "text", required: false },
+    { label: "AR(R&D) - Name", name: "arRDName", type: "text", required: false },
+    { label: "DR(R&D) - Name", name: "drRDName", type: "text", required: false },
+    { label: "Associate Dean (R&D) - Name", name: "aDeanRDName", type: "text", required: false },
+    { label: "Director - Name", name: "directorName", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
 const getGenAdminTemplate = async (req, res) => {
   try {
     let template = await FormTemplate.findOne({ code: GEN_ADMIN_TEMPLATE_CODE });
@@ -841,6 +903,20 @@ const getComputerCenterRDRecommendationGeMTemplate = async (req, res) => {
   }
 };
 
+
+const getComputerCenterRDTwoBidGeMTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: CC_RD_TWO_BID_GEM_CODE });
+    if (!template) {
+      template = await FormTemplate.create({ ...CC_RD_TWO_BID_GEM_TEMPLATE, createdBy: req.user.id });
+    }
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load CC R&D two-bid GeM template" });
+  }
+};
+
 // @desc Create new form template
 const createTemplate = async (req, res) => {
   try {
@@ -1020,6 +1096,14 @@ const getAllTemplates = async (req, res) => {
       });
     }
 
+    let ccRdTwoBidGeMTemplate = await FormTemplate.findOne({ code: CC_RD_TWO_BID_GEM_CODE });
+    if (!ccRdTwoBidGeMTemplate) {
+      await FormTemplate.create({
+        ...CC_RD_TWO_BID_GEM_TEMPLATE,
+        createdBy: req.user?.id || null,
+      });
+    }
+
     const templates = await FormTemplate.find()
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
@@ -1066,4 +1150,5 @@ module.exports = {
   getComputerCenterEmailAccountRequestTemplate,
   getComputerCenterProxyLdapRequestTemplate,
   getComputerCenterRDRecommendationGeMTemplate,
+  getComputerCenterRDTwoBidGeMTemplate,
 };

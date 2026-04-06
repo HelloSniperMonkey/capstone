@@ -22,6 +22,7 @@ const { renderComputerCenterFacultyDeclarationPdf } = require("../forms/cc/Compu
 const { renderComputerCenterEmailAccountRequestPdf } = require("../forms/cc/ComputerCenterEmailAccountRequestForm");
 const { renderComputerCenterProxyLdapAccountRequestPdf } = require("../forms/cc/ComputerCenterProxyLdapAccountRequestForm");
 const { renderCCRDRecommendationDirectPurchaseGeMPdf } = require("../forms/cc/CCRDRecommendationDirectPurchaseGeM");
+const { renderCCRDRecommendationTwoBidPurchaseGeMPdf } = require("../forms/cc/CCRDRecommendationTwoBidPurchaseGeM");
 const { getResponseValue } = require("../utils/pdfUtils");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
@@ -43,6 +44,7 @@ const CC_FACULTY_DECLARATION_CODE = "cc-faculty-declaration";
 const CC_EMAIL_ACCOUNT_REQUEST_CODE = "cc-email-account-request";
 const CC_PROXY_LDAP_REQUEST_CODE = "cc-proxy-ldap-request";
 const CC_RD_RECOMMENDATION_GEM_CODE = "cc-rd-recommendation-gem";
+const CC_RD_TWO_BID_GEM_CODE = "cc-rd-two-bid-gem";
 
 // @desc Submit a form
 // Body: { templateId, responses, parentSubmissionId? }
@@ -295,6 +297,7 @@ const generateSubmissionPDF = async (req, res) => {
     const isComputerCenterEmailAccountRequest = templateCode === CC_EMAIL_ACCOUNT_REQUEST_CODE;
     const isComputerCenterProxyLdapRequest = templateCode === CC_PROXY_LDAP_REQUEST_CODE;
     const isCCRDRecommendationGeM = templateCode === CC_RD_RECOMMENDATION_GEM_CODE;
+    const isCCRDTwoBidGeM = templateCode === CC_RD_TWO_BID_GEM_CODE;
 
     const doc = new PDFDocument({
       margin: isGenAdmin
@@ -353,6 +356,8 @@ const generateSubmissionPDF = async (req, res) => {
       renderComputerCenterProxyLdapAccountRequestPdf(doc, submission);
     } else if (isCCRDRecommendationGeM) {
       renderCCRDRecommendationDirectPurchaseGeMPdf(doc, submission);
+    } else if (isCCRDTwoBidGeM) {
+      renderCCRDRecommendationTwoBidPurchaseGeMPdf(doc, submission);
     } else {
       // Header (logo placeholder + institute title)
       doc

@@ -21,6 +21,7 @@ const {
   getComputerCenterEmailAccountRequestTemplate,
   getComputerCenterProxyLdapRequestTemplate,
   getComputerCenterRDRecommendationGeMTemplate,
+  getComputerCenterRDTwoBidGeMTemplate,
 } = require("../controllers/formController");
 
 const protect = require("../middleware/authMiddleware");
@@ -108,5 +109,8 @@ router.get("/computer-center-proxy-ldap-request/template", protect, getComputerC
 
 // Computer Center - R&D cum CC Recommendation for Direct Purchase through GeM
 router.get("/computer-center-rd-recommendation-gem/template", protect, getComputerCenterRDRecommendationGeMTemplate);
+
+// Computer Center - R&D cum CC Recommendation for Two-Bid Purchase through GeM
+router.get("/computer-center-rd-two-bid-gem/template", protect, getComputerCenterRDTwoBidGeMTemplate);
 
 module.exports = router;

@@ -26,6 +26,7 @@ import ComputerCenterFacultyDeclarationForm from "./forms/cc/ComputerCenterFacul
 import ComputerCenterEmailAccountRequestForm from "./forms/cc/ComputerCenterEmailAccountRequestForm";
 import ComputerCenterProxyLdapAccountRequestForm from "./forms/cc/ComputerCenterProxyLdapAccountRequestForm";
 import ComputerCenterRDRecommendationGeM from "./forms/cc/CCRDRecommendationDirectPurchaseGeM";
+import ComputerCenterRDTwoBidGeM from "./forms/cc/CCRDRecommendationTwoBidPurchaseGeM";
 import FinanceProcurementRecommendationSanctionForm from "./forms/fin/RecommendationCumSanctionSheetForPurchaseDoubleBidInrForm";
 import Submissions from "./pages/Submissions";
 import Approvals from "./pages/Approvals";
@@ -277,6 +278,26 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <ComputerCenterRDRecommendationGeM />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/cc-rd-two-bid-gem"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ComputerCenterRDTwoBidGeM />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/computer-center-rd-two-bid-gem"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ComputerCenterRDTwoBidGeM />
               </Layout>
             </PrivateRoute>
           }
