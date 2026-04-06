@@ -6,6 +6,10 @@ const {
   getGenAdminTemplate,
   getGenAdminVehicleRequisitionTemplate,
   getSecurityCampusLeaveTemplate,
+  getSecurityDayScholarVehiclePermitTemplate,
+  getSecurityMessWorkersTemplate,
+  getSecurityPassRenewalTemplate,
+  getSecurityEntryPassTemplate,
   getSecurityRequisitionForVehicleStickerTemplate,
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
   getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate,
@@ -44,6 +48,17 @@ router.get(
 // Security – Campus Leaving Permission after 10:00 PM (For Female Students)
 router.get("/security-campus-leave-permission-female/template", protect, getSecurityCampusLeaveTemplate);
 
+// Security – Day Scholar Vehicle Permit & Parking Permission Form
+router.get("/security-day-scholar-vehicle-permit/template", protect, getSecurityDayScholarVehiclePermitTemplate);
+
+// Security – Mess Worker Initial Entry Form
+router.get("/security-mess-workers/template", protect, getSecurityMessWorkersTemplate);
+
+// Security – Pass Renewal (Domestic Help/Tutor/Driver/Supplier)
+router.get("/security-pass-renewal/template", protect, getSecurityPassRenewalTemplate);
+
+// Security – Entry Pass Requisition (Domestic Help/Tutor/Driver/Supplier)
+router.get("/security-entry-pass/template", protect, getSecurityEntryPassTemplate);
 // Security - Requisition for Vehicle Sticker
 router.get(
   "/security_requisition_for_vehicle_sticker/template",

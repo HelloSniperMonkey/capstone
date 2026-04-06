@@ -5,6 +5,10 @@ const PDFDocument = require("pdfkit");
 const { renderGenAdminPdf } = require("../forms/genadmin/pdfGenerator");
 const { renderGenAdminVehicleRequisitionPdf } = require("../forms/genadmin/VehicleRequisitionForTransport");
 const { renderSecurityCampusLeavePermissionForFemaleStudentsPdf } = require("../forms/security/SecurityCampusLeavePermissionForFemaleStudents");
+const { renderSecurityDayScholarVehiclePermitPdf } = require("../forms/security/SecurityDayScholarVehiclePermit");
+const { renderSecurityMessWorkersPdf } = require("../forms/security/SecurityMessWorkers");
+const { renderSecurityPassRenewalPdf } = require("../forms/security/SecurityPassRenewal");
+const { renderSecurityRequisitionForEntryPassPdf } = require("../forms/security/SecurityRequisitionForEntryPass");
 const { renderSecurityRequisitionForVehicleStickerPdf } = require("../forms/security/SecurityRequisitionForVehicleSticker");
 const { renderSecurityVehicleStickerRequitionForMarriedScholarPdf } = require("../forms/security/SecurityVehicleStickerRequitionForMarriedScholar");
 const {
@@ -22,6 +26,10 @@ const { getResponseValue } = require("../utils/pdfUtils");
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const GEN_ADMIN_VEHICLE_REQUISITION_CODE = "gen-admin-vehicle-requisition-transport";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE = "security-day-scholar-vehicle-permit";
+const SECURITY_MESS_WORKERS_CODE = "security-mess-workers";
+const SECURITY_PASS_RENEWAL_CODE = "security-pass-renewal";
+const SECURITY_ENTRY_PASS_CODE = "security-entry-pass";
 const SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE = "security_requisition_for_vehicle_sticker";
 const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE = "security-vehicle-sticker-requition-for-married-scholar";
 const SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE =
@@ -267,6 +275,10 @@ const generateSubmissionPDF = async (req, res) => {
     const isGenAdmin = templateCode === GEN_ADMIN_TEMPLATE_CODE;
     const isGenAdminVehicleRequisition = templateCode === GEN_ADMIN_VEHICLE_REQUISITION_CODE;
     const isSecurityCampusLeaveFemale = templateCode === SECURITY_CAMPUS_LEAVE_FEMALE_CODE;
+    const isSecurityDayScholarVehiclePermit = templateCode === SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE;
+    const isSecurityMessWorkers = templateCode === SECURITY_MESS_WORKERS_CODE;
+    const isSecurityPassRenewal = templateCode === SECURITY_PASS_RENEWAL_CODE;
+    const isSecurityEntryPass = templateCode === SECURITY_ENTRY_PASS_CODE;
     const isSecurityRequisitionForVehicleSticker = templateCode === SECURITY_REQUISITION_FOR_VEHICLE_STICKER_CODE;
     const isSecurityVehicleStickerRequitionForMarriedScholar =
       templateCode === SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE;
@@ -307,6 +319,14 @@ const generateSubmissionPDF = async (req, res) => {
       renderGenAdminVehicleRequisitionPdf(doc, submission);
     } else if (isSecurityCampusLeaveFemale) {
       renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
+    } else if (isSecurityDayScholarVehiclePermit) {
+      renderSecurityDayScholarVehiclePermitPdf(doc, submission);
+    } else if (isSecurityMessWorkers) {
+      renderSecurityMessWorkersPdf(doc, submission);
+    } else if (isSecurityPassRenewal) {
+      renderSecurityPassRenewalPdf(doc, submission);
+    } else if (isSecurityEntryPass) {
+      renderSecurityRequisitionForEntryPassPdf(doc, submission);
     } else if (isSecurityRequisitionForVehicleSticker) {
       renderSecurityRequisitionForVehicleStickerPdf(doc, submission);
     } else if (isSecurityVehicleStickerRequitionForMarriedScholar) {

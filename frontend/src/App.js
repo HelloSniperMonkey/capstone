@@ -6,11 +6,16 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import BulkImport from "./pages/BulkImport";
+import ChangePassword from "./pages/ChangePassword";
 import Forms from "./pages/Forms";
 import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
 import VehicleRequisitionForTransportForm from "./forms/genadmin/VehicleRequisitionForTransportForm";
 import SecurityCampusLeavePermissionForFemaleStudents from "./forms/security/SecurityCampusLeavePermissionForFemaleStudents";
+import SecurityDayScholarVehiclePermit from "./forms/security/SecurityDayScholarVehiclePermit";
+import SecurityMessWorkers from "./forms/security/SecurityMessWorkers";
+import SecurityPassRenewal from "./forms/security/SecurityPassRenewal";
+import SecurityRequisitionForEntryPass from "./forms/security/SecurityRequisitionForEntryPass";
 import SecurityRequisitionForVehicleSticker from "./forms/security/SecurityRequisitionForVehicleSticker";
 import SecurityVehicleStickerRequitionForMarriedScholar from "./forms/security/SecurityVehicleStickerRequitionForMarriedScholar";
 import SecurityUndertakingRegardingWorkerConductAndResponsibility from "./forms/security/SecurityUndertakingRegardingWorkerConductAndResponsibility";
@@ -106,11 +111,31 @@ function App() {
           }
         />
         <Route
+          path="/forms/security-day-scholar-vehicle-permit"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityDayScholarVehiclePermit />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/forms/security_requisition_for_vehicle_sticker"
           element={
             <PrivateRoute>
               <Layout>
                 <SecurityRequisitionForVehicleSticker />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/security-mess-workers"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityMessWorkers />
               </Layout>
             </PrivateRoute>
           }
@@ -126,6 +151,26 @@ function App() {
           }
         />
         <Route
+          path="/forms/security-pass-renewal"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityPassRenewal />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/security-entry-pass"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityRequisitionForEntryPass />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+       <Route
           path="/forms/security_undertaking_regarding_worker_conduct_and_responsibility"
           element={
             <PrivateRoute>
@@ -241,6 +286,16 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <Approvals />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ChangePassword />
               </Layout>
             </PrivateRoute>
           }
